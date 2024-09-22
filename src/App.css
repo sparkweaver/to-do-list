@@ -1,21 +1,46 @@
 #root {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
 }
 
 .App {
-  max-width: 100vw;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
 header {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  margin: 0;
   width: 100%;
-  height: 80px;
+  height: 100px;
+}
+
+header h1 {
+  grid-column: 2/4;
+  font-size: 2.5rem;
+  font-weight: lighter;
+  margin: 0;
+  text-align: center;
+}
+
+.image-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  color: royalblue;
+  grid-column: 4/5;
+}
+
+.image-button img {
+  width: 40px;
+  height: 40px;
 }
 
 main {
@@ -99,7 +124,12 @@ button {
 }
 
 @media (min-width: 1280px) {
-  button:hover {
+
+  .task-list li p {
+    max-width: 90%;
+  }
+
+  .task-actions-section button:hover {
     background-color: rgb(76, 121, 255);
     cursor: pointer;
   }
