@@ -1,38 +1,110 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#root {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.App {
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  width: 100%;
+  height: 80px;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 95px repeat(3, 1fr);
+  grid-template-rows: 45px auto;
+}
+
+.task-actions-section {
+  grid-column: 1/5;
+  grid-row: 1/2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.task-list-section {
+  grid-column: 1/5;
+  grid-row: 2/3;
+}
+
+button {
+  padding: 0;
+  background-color: royalblue;
   color: white;
+  border: none;
+  grid-column: 1/2;
+  font-size: 1.1rem;
 }
 
-.App-link {
-  color: #61dafb;
+.search-bar {
+  padding: 10px;
+  font-size: 1.1rem;
+  border: 1px solid lightgray;
+  grid-column: 2/5;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.task-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task-list li {
+  padding: 10px;
+  border-bottom: 1px solid gray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.task-list li.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.task-list li input {
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+.task-list li p {
+  margin: 0;
+  font-size: 1.1rem;
+  max-width: 70%;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-left: 1px solid black;
+  padding: 0 20px;
+}
+
+.task-list li p::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .App {
+    width: 600px;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (min-width: 1280px) {
+  button:hover {
+    background-color: rgb(76, 121, 255);
+    cursor: pointer;
+  }
+
+  .task-list li:hover {
+    background-color: rgb(242, 242, 242);
   }
 }
