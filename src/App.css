@@ -1,7 +1,7 @@
 #root {
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .App {
@@ -44,21 +44,23 @@ header h1 {
 }
 
 main {
-  display: grid;
-  grid-template-columns: 95px repeat(3, 1fr);
-  grid-template-rows: 45px auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-.task-actions-section {
-  grid-column: 1/5;
-  grid-row: 1/2;
+.todo-actions-section {
+  width: 100%;
+  height: 45px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 
-.task-list-section {
-  grid-column: 1/5;
-  grid-row: 2/3;
+.todo-list-section {
+  width: 100%;
+  height: auto;
 }
 
 button {
@@ -77,34 +79,34 @@ button {
   grid-column: 2/5;
 }
 
-.task-list {
+.todo-list {
   list-style-type: none;
   padding: 0;
 }
 
-.task-list li {
+.todo-list li {
   padding: 10px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #4F4F4F;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.task-list li.completed {
+.todo-list li.completed {
   text-decoration: line-through;
-  color: gray;
+  color: #4F4F4F;
 }
 
-.task-list li input {
+.todo-list li input {
   width: 20px;
   height: 20px;
   margin-right: 20px;
 }
 
-.task-list li p {
+.todo-list li p {
   margin: 0;
   font-size: 1.1rem;
-  max-width: 70%;
+  max-width: 80%;
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
@@ -113,7 +115,7 @@ button {
   padding: 0 20px;
 }
 
-.task-list li p::-webkit-scrollbar {
+.todo-list li p::-webkit-scrollbar {
   display: none;
 }
 
@@ -121,20 +123,25 @@ button {
   .App {
     width: 600px;
   }
+
+  .todo-list li p {
+    max-width: 90%;
+  }
 }
 
 @media (min-width: 1280px) {
 
-  .task-list li p {
-    max-width: 90%;
+  .todo-list li p {
+    white-space: normal;
+    overflow: visible;
   }
 
-  .task-actions-section button:hover {
+  .todo-actions-section button:hover {
     background-color: rgb(76, 121, 255);
     cursor: pointer;
   }
 
-  .task-list li:hover {
+  .todo-list li:hover {
     background-color: rgb(242, 242, 242);
   }
 }

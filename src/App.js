@@ -6,12 +6,12 @@ const uncheckSound = new Audio("/pencil-eraser.mp3");
 checkSound.volume = 0.2;
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState("");
   const [allChecked, setAllChecked] = useState(false);
   const [currentUser, setCurrentUser] = useState(0);
 
-  // Fetch tasks from the server based on the current user
+  // Fetch todos from the server based on the current user
   useEffect(() => {
     const fetchUrl =
       currentUser === 0
@@ -20,12 +20,12 @@ function App() {
 
     fetch(fetchUrl)
       .then((response) => response.json())
-      .then((data) => setTasks(data))
-      .catch((error) => console.error("Error fetching tasks:", error));
+      .then((data) => setTodos(data))
+      .catch((error) => console.error("Error fetching todos:", error));
   }, [currentUser]);
 
-  // Updates a task's completion status on the server
-  const updateTaskOnServer = (id, completed) => {
+  // Updates a todo's completion status on the server
+  const updateTodoOnServer = (id, completed) => {
     return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
       method: "PATCH",
       headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -33,55 +33,47 @@ function App() {
     })
       .then((response) => response.json())
       .then((json) => console.log(json))
-      .catch((error) => console.error("Error updating task:", error));
+      .catch((error) => console.error("Error updating todo:", error));
   };
 
-  // Toggle the completion status of a single task
-  const toggleTaskCompletion = (id, completed) => {
-    const updatedTasks = tasks.map((task) => 
-      task.id === id ? { ...task, completed: !task.completed } : task
+  // Toggle the completion status of a single todo
+  const toggleTodoCompletion = (id, completed) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
-    
-    if (completed) {
-      uncheckSound.play();
-    } else {
-      checkSound.play();
-    }
-    setTasks(updatedTasks);
 
-    const allTasksAreCompleted = updatedTasks.every((task) => task.completed);
-    setAllChecked(allTasksAreCompleted);
+    completed ? uncheckSound.play() : checkSound.play();
 
-    updateTaskOnServer(id, !completed);
+    setTodos(updatedTodos);
+
+    const allTodosAreCompleted = updatedTodos.every((todo) => todo.completed);
+    setAllChecked(allTodosAreCompleted);
+
+    updateTodoOnServer(id, !completed);
   };
 
-  // Marks all tasks as completed
-  const checkAllTasks = () => {
-    if (allChecked) {
-      return;
-    }
+  // Marks all todos as completed
+  const checkAllTodos = () => {
+    if (allChecked) return;
 
-    const updatedTasks = tasks.map((task) => {
-      if (!task.completed) {
-        updateTaskOnServer(task.id, true);
-        return { ...task, completed: true };
-      }
-      return task;
-    });
+    const updatedTodos = todos.map((todo) =>
+      !todo.completed
+        ? (updateTodoOnServer(todo.id, true), { ...todo, completed: true })
+        : todo
+    );
 
     checkSound.play();
-    setTasks(updatedTasks);
+    setTodos(updatedTodos);
     setAllChecked(true);
   };
 
   // Cycles through users 1-10 and resets to user 0 (all users)
-  const toggleUsers = () => {
-    setCurrentUser((prev) => (prev + 1) % 11);
-  };
+  const toggleUsers = () =>
+    setCurrentUser((previousUser) => (previousUser + 1) % 11);
 
-  // Filter and sort tasks based on search term and completion status
-  const filteredTasks = tasks
-    .filter((task) => task.title.toLowerCase().includes(search.toLowerCase()))
+  // Filter and sort todos based on search term and completion status
+  const filteredTodos = todos
+    .filter((todo) => todo.title.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => a.completed - b.completed);
 
   return (
@@ -92,43 +84,44 @@ function App() {
           className="image-button"
           onClick={toggleUsers}
           aria-label={`Toggle to ${
-            currentUser === 10 ? "all users" : "user " + (currentUser + 1)}`}
+            currentUser === 10 ? "all users" : "user " + (currentUser + 1)
+          }`}
         >
           <img src="/book.png" alt="Book" />
           User: {currentUser === 0 ? "A" : currentUser}
         </button>
       </header>
       <main>
-        <section className="task-actions-section">
+        <section className="todo-actions-section">
           <button
-            onClick={checkAllTasks}
-            aria-label="Mark all tasks as completed"
+            onClick={checkAllTodos}
+            aria-label="Mark all todos as completed"
           >
             Check All
           </button>
           <input
             type="text"
-            placeholder="Search tasks..."
+            placeholder="Search todos..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="search-bar"
-            aria-label="Search for tasks"
+            aria-label="Search for todos"
           />
         </section>
 
-        <section className="task-list-section">
-          <ul className="task-list">
-            {filteredTasks.map((task) => (
-              <li key={task.id} className={task.completed ? "completed" : ""}>
+        <section className="todo-list-section">
+          <ul className="todo-list">
+            {filteredTodos.map((todo) => (
+              <li key={todo.id} className={todo.completed ? "completed" : ""}>
                 <input
                   type="checkbox"
-                  checked={task.completed}
-                  onChange={() => toggleTaskCompletion(task.id, task.completed)}
-                  aria-label={`Mark ${task.title} as ${
-                    task.completed ? "incomplete" : "completed"
+                  checked={todo.completed}
+                  onChange={() => toggleTodoCompletion(todo.id, todo.completed)}
+                  aria-label={`Mark ${todo.title} as ${
+                    todo.completed ? "incomplete" : "completed"
                   }`}
                 />
-                <p>{task.title}</p>
+                <p>{todo.title}</p>
               </li>
             ))}
           </ul>
