@@ -20,13 +20,16 @@ function App() {
 
     fetch(fetchUrl)
       .then((response) => response.json())
-      .then((data) => setTodos(data))
+      .then((data) => {
+        setTodos(data);
+        setAllChecked(isAllChecked(data));
+      })
       .catch((error) => console.error("Error fetching todos:", error));
   }, [currentUser]);
 
   // Updates a todo's completion status on the server
   const updateTodoOnServer = (id, completed) => {
-    return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
       method: "PATCH",
       headers: { "Content-type": "application/json; charset=UTF-8" },
       body: JSON.stringify({ completed: completed }),
@@ -46,8 +49,7 @@ function App() {
 
     setTodos(updatedTodos);
 
-    const allTodosAreCompleted = updatedTodos.every((todo) => todo.completed);
-    setAllChecked(allTodosAreCompleted);
+    setAllChecked(isAllChecked(updatedTodos));
 
     updateTodoOnServer(id, !completed);
   };
@@ -66,6 +68,9 @@ function App() {
     setTodos(updatedTodos);
     setAllChecked(true);
   };
+
+  // Check if all todos are completed
+  const isAllChecked = (todos) => todos.every((todo) => todo.completed);
 
   // Cycles through users 1-10 and resets to user 0 (all users)
   const toggleUsers = () =>
@@ -106,6 +111,7 @@ function App() {
             onChange={(e) => setSearch(e.target.value)}
             className="search-bar"
             aria-label="Search for todos"
+            name="search-todos"
           />
         </section>
 
@@ -120,6 +126,7 @@ function App() {
                   aria-label={`Mark ${todo.title} as ${
                     todo.completed ? "incomplete" : "completed"
                   }`}
+                  id={`todo-${todo.id}`}
                 />
                 <p>{todo.title}</p>
               </li>

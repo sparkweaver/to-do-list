@@ -7,3 +7,7 @@ This project was bootstrapped with Create React App and implements all the provi
 * Added a sound effect when the user checks, unchecks, or checks all todos.
 * A button that toggles between viewing todos for individual users or viewing all todos.
 * Utilized `aria-label` to provide clear text for screen readers, improving accessibility.
+
+## Note
+
+The users toggle simulates different users viewing their own todo lists. Updates made for one user won't be saved when cycling between users, as the data is reset when toggling.
